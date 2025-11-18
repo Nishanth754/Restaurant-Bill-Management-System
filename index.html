@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Billing System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf-autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cafeteria Billing System</h1>
+            <div class="header-right">
+                <div class="revenue-summary">
+                    <span>Daily Revenue: ₹<span id="dailyRevenue">0</span></span>
+                    <span>Total Bills: <span id="totalBills">0</span></span>
+                </div>
+                <div class="user-actions">
+                    <span class="user-badge" id="userRoleBadge">Role: --</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Left Section: Food Items -->
+            <section class="food-items-section">
+                <h2>Menu Items</h2>
+                <div class="food-items-grid">
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://recipes.timesofindia.com/thumb/53239358.cms?imgsize=176260&width=800&height=800" alt="Idli" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Idli</span>
+                            <span class="item-price">₹6</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="idli-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('idli', 6)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://media.cntraveller.in/wp-content/uploads/2020/05/dosa-recipes-1366x768.jpg" alt="Dosa" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Dosa</span>
+                            <span class="item-price">₹25</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="dosa-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('dosa', 25)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://tse1.explicit.bing.net/th/id/OIP.DOsgWw3hkeZxagj6x_HESgHaGE?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Vada" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Vada</span>
+                            <span class="item-price">₹7</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="vada-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('vada', 7)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://www.awesomecuisine.com/wp-content/uploads/2020/03/poori-masala-kizhangu-585x390.jpg" alt="Poori" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Poori</span>
+                            <span class="item-price">₹60</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="poori-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('poori', 60)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.FHOPnNDUAxdeC83QcmNTYAHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pongal" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Pongal</span>
+                            <span class="item-price">₹80</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="pongal-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('pongal', 80)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://www.justonecookbook.com/wp-content/uploads/2020/04/Royal-Milk-Tea-4730-I.jpg" alt="Tea" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Tea</span>
+                            <span class="item-price">₹20</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="tea-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('tea', 20)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="food-item">
+                        <div class="item-image">
+                            <img src="https://images.pexels.com/photos/434213/pexels-photo-434213.jpeg?cs=srgb&dl=aroma-aromatic-art-434213.jpg&fm=jpg" alt="Coffee" loading="lazy">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Coffee</span>
+                            <span class="item-price">₹35</span>
+                        </div>
+                        <div class="item-controls">
+                            <input type="number" id="coffee-qty" min="0" value="0" class="quantity-input">
+                            <button onclick="addItem('coffee', 35)" class="add-btn">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Section: Current Bill -->
+            <section class="current-bill-section">
+                <h2>Current Bill</h2>
+                <div class="bill-header">
+                    <span>Bill #<span id="currentBillNumber">1</span></span>
+                    <span id="billDate"></span>
+                </div>
+
+                <div class="bill-metrics">
+                    <div class="metric-card">
+                        <span class="metric-label">Items</span>
+                        <span class="metric-value" id="metricItemCount">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Subtotal</span>
+                        <span class="metric-value" id="metricSubtotal">₹0.00</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Tax (5%)</span>
+                        <span class="metric-value" id="metricTax">₹0.00</span>
+                    </div>
+                    <div class="metric-card highlight">
+                        <span class="metric-label">Grand Total</span>
+                        <span class="metric-value" id="metricGrand">₹0.00</span>
+                    </div>
+                </div>
+
+                <div class="bill-layout">
+                    <div class="bill-table-card">
+                        <div class="bill-items" id="billItems">
+                            <p class="empty-bill">No items added yet</p>
+                        </div>
+                    </div>
+                    <div class="bill-summary-card">
+                        <div class="summary-header">
+                            <div>
+                                <h3>Bill Summary</h3>
+                                <p>Automatically updated as you add items</p>
+                            </div>
+                        </div>
+                        <table class="summary-table">
+                            <tbody>
+                                <tr>
+                                    <td>Subtotal</td>
+                                    <td id="summarySubtotal">₹0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Tax (5%)</td>
+                                    <td id="summaryTax">₹0.00</td>
+                                </tr>
+                                <tr class="summary-total-row">
+                                    <td>Grand Total</td>
+                                    <td id="summaryGrand">₹0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="summary-extra">
+                            <div>
+                                <span class="summary-label">Total Items</span>
+                                <span class="summary-value" id="summaryItems">0</span>
+                            </div>
+                            <div>
+                                <span class="summary-label">Avg. / Item</span>
+                                <span class="summary-value" id="summaryAverage">₹0.00</span>
+                            </div>
+                        </div>
+                        <div class="summary-note">
+                            <label for="billNotes">Order Notes</label>
+                            <textarea id="billNotes" class="bill-notes-input" placeholder="Add special instructions, table number, or customer name..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bill-total">
+                    <div class="total-row">
+                        <span>Grand Total:</span>
+                        <span id="billTotal">₹0.00</span>
+                    </div>
+                    <div class="total-subtext">Includes 5% service tax</div>
+                </div>
+                <div class="bill-actions">
+                    <button onclick="generateBillPDF()" class="btn-primary" id="generateBillBtn" disabled>Generate Bill PDF</button>
+                    <button onclick="saveBill()" class="btn-success" id="saveBillBtn" disabled>Save Bill</button>
+                    <button onclick="clearCurrentBill()" class="btn-secondary">Clear Bill</button>
+                </div>
+            </section>
+
+            <!-- Right Section: Transaction History -->
+            <section class="transactions-section">
+                <h2>Transaction History</h2>
+                <div class="transaction-actions">
+                    <button onclick="generateDailyRevenuePDF()" class="btn-primary" id="revenueBtn" disabled>Daily Revenue PDF</button>
+                    <button onclick="resetAll()" class="btn-danger">Reset All</button>
+                </div>
+                <div class="transactions-list" id="transactionsList">
+                    <p class="empty-transactions">No transactions yet</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Login | Cafeteria Billing</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Cafe Login</h1>
+            <p>Quick access for cafe staff</p>
+        </div>
+
+        <form id="cafeLoginForm">
+            <div class="form-group">
+                <label for="cafeUsername">Username</label>
+                <input type="text" id="cafeUsername" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cafePassword">Password</label>
+                <input type="password" id="cafePassword" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Enter System</button>
+
+            <div class="error-message" id="cafeError">
+                Invalid credentials. Please try again.
+            </div>
+        </form>
+
+        <div class="login-footer">
+            Administrator? <a href="owner-login.html">Owner Login</a>
+        </div>
+    </div>
+
+    <script>
+        const CAFE_USERNAME = 'worker';
+        const CAFE_PASSWORD = 'worker@1234';
+
+        document.getElementById('cafeLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('cafeUsername').value.trim();
+            const password = document.getElementById('cafePassword').value.trim();
+            const error = document.getElementById('cafeError');
+
+            if (username === CAFE_USERNAME && password === CAFE_PASSWORD) {
+                localStorage.setItem('authenticatedUser', JSON.stringify({
+                    role: 'cafe',
+                    username: CAFE_USERNAME,
+                    loginTime: new Date().toISOString()
+                }));
+                window.location.href = 'index.html';
+            } else {
+                error.textContent = 'Invalid username or password. Please try again.';
+                error.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
+
